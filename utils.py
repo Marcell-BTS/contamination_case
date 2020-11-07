@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
 from sklearn.metrics import mean_squared_error, make_scorer
 from sklearn.model_selection import cross_val_score
 
@@ -42,6 +43,21 @@ def one_hot_encoder(df, columns):
     
     
 
+    
+def plotting_categories(df, column):
+    """
+    Exibe as distribuições de cada categoria da variável de interesse em relação ao target "prob_V1_V2".
+    df: Dataframe de interesse.
+    column: Variável de interesse.
+    """
+    categories = df[column].unique()
+    
+    for category in categories:
+        series_to_plot = df[df[column]==category]['prob_V1_V2']
+        sns.distplot(series_to_plot, hist=False, label=category)
+    
+    
+    
 def rmse_cv(model, cv):
     
     """
@@ -49,7 +65,6 @@ def rmse_cv(model, cv):
     
     model: Objeto do modelo treinado.
     cv: Número 'k' de K-Fold Cross-Validation
-    
     """
     
     scorer = make_scorer(mean_squared_error, greater_is_better = False)     
